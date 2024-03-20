@@ -1,13 +1,22 @@
 package com.example.recipes.model;
 
+import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import org.springframework.data.annotation.Id;
 
+@Entity
 public class Ingredient{
+
+    @jakarta.persistence.Id
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String amount;
 
     @ManyToOne
@@ -54,6 +63,5 @@ public class Ingredient{
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
-
 
 }

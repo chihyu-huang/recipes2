@@ -1,18 +1,28 @@
 package com.example.recipes.model;
 
+import jakarta.persistence.*;
+//import javax.persistence.*;
+
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
+@Entity
 public class Recipe {
 
+    @jakarta.persistence.Id
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+    @Column(length = 1000)
     private String description;
+    @Column(name = "time_required")
     private int timeRequired;
+    @Column(name = "meal_type")
     private String mealType;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
@@ -30,7 +40,8 @@ public class Recipe {
         this.mealType = mealType;
     }
 
-    // Getters and setters
+    // Getters
+
     public Long getId() {
         return id;
     }
@@ -108,6 +119,8 @@ public class Recipe {
         }
         return null;
     }
+
+
 
 //    public boolean hasIngredient(Ingredient ingredient) {
 //        return this.ingredients.contains(ingredient);
