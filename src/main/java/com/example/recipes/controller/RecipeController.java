@@ -2,6 +2,7 @@ package com.example.recipes.controller;
 
 import com.example.recipes.model.Recipe;
 import com.example.recipes.repository.RecipeRepository;
+//import com.example.recipes.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,19 +11,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeController {
 
+
     private final RecipeRepository recipeRepository;
 
-    @Autowired
+
     public RecipeController(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
 
-    // Get all recipes
 
     @GetMapping("/api/recipes")
     public ResponseEntity<String> getRecipesHtml() {
@@ -31,6 +33,21 @@ public class RecipeController {
                 .contentType(MediaType.TEXT_HTML) // Set Content-Type to text/html
                 .body(htmlContent);
     }
+
+
+    @GetMapping
+    public Recipe getRecipe(@RequestParam Integer id){
+        Optional recipe = recipeRepository.findById(id);
+        if(recipe.isPresent()){
+            return (Recipe) recipe.get();
+        }
+        return null;
+    }
+
+
+
+
+    // Get all recipes
 
     @GetMapping
     public ResponseEntity<List<Recipe>> getAllRecipes() {
