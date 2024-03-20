@@ -17,12 +17,12 @@ public class RecipesApplication {
 		SpringApplication.run(RecipesApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner commandLineRunner(RecipeRepository recipeRepository, IngredientRepository ingredientRepository) {
-		return args -> {
-			recipeRepository.save(new Recipe(null, "Pasta", "Pasta with tomato sauce", 30, "Lunch"));
-//			ingredientRepository.save(new Ingredient(null, "Pasta", "200g"));
-		};
-	}
+//	@Bean
+//	CommandLineRunner commandLineRunner(RecipeRepository recipeRepository, IngredientRepository ingredientRepository) {
+//		return args -> {
+//			recipeRepository.save(new Recipe(null, "Pasta", "Pasta with tomato sauce", 30, "Lunch"));
+////			ingredientRepository.save(new Ingredient(null, "Pasta", "200g"));
+//		};
+//	}
 
 }
