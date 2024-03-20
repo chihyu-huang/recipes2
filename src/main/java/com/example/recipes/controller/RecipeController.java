@@ -1,5 +1,6 @@
 package com.example.recipes.controller;
 
+import org.springframework.ui.Model;
 import com.example.recipes.model.Recipe;
 import com.example.recipes.repository.RecipeRepository;
 //import com.example.recipes.service.RecipeService;
@@ -17,20 +18,49 @@ import java.util.Optional;
 @RequestMapping("/api/recipes")
 public class RecipeController {
 
-    private final RecipeRepository recipeRepository;
+//    @GetMapping("")
+//    public String showRecipesPage() {
+//        return "recipes"; // Return the name of the HTML file
+//    }
+
+    @Autowired
+    private RecipeRepository recipeRepository;
+
+
+
+//    private final RecipeRepository recipeRepository;
 
     public RecipeController(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
 
-    // Get all recipes
-    @GetMapping
+//     Get all recipes
+    @GetMapping("")
     public ResponseEntity<List<Recipe>> getAllRecipes() {
         Iterable<Recipe> recipeIterable = recipeRepository.findAll();
         List<Recipe> recipes = new ArrayList<>();
         recipeIterable.forEach(recipes::add); // Convert Iterable to List
         return ResponseEntity.ok(recipes);
     }
+
+//    @GetMapping("")
+//    public String getAllRecipes(Model model) {
+//        Iterable<Recipe> recipeIterable = recipeRepository.findAll();
+//        List<Recipe> recipes = new ArrayList<>();
+//        recipeIterable.forEach(recipes::add); // Convert Iterable to List
+//        model.addAttribute("recipes", recipes);
+//        return "recipes"; // Return the name of the HTML file
+//    }
+
+//    public String getRecipeById(Model model, @PathVariable Integer id) {
+//        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+//        if (recipeOptional.isPresent()) {
+//            model.addAttribute("recipe", recipeOptional.get());
+//            return "recipe"; // Return the name of the HTML file
+//        }
+//        return "redirect:/api/recipes";
+//    }
+
 
     // Get recipe by ID
     @GetMapping("/{id}")
@@ -42,8 +72,8 @@ public class RecipeController {
     }
 
     // Create a new recipe
-    @PostMapping
-    public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe){
         if (recipe == null) {
             return ResponseEntity.badRequest().build();
         }

@@ -1,7 +1,7 @@
 package com.example.recipes.repository;
 
 import com.example.recipes.model.Ingredient;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IngredientRepository extends CrudRepository<Ingredient, Integer> {
+public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 }
