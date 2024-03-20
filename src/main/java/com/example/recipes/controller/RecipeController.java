@@ -17,38 +17,13 @@ import java.util.Optional;
 @RequestMapping("/api/recipes")
 public class RecipeController {
 
-
     private final RecipeRepository recipeRepository;
-
 
     public RecipeController(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
 
-
-    @GetMapping("/api/recipes")
-    public ResponseEntity<String> getRecipesHtml() {
-        String htmlContent = "<!DOCTYPE html><html><head><title>Recipes</title></head><body><h1>Recipes</h1><p>Hello, world!</p></body></html>";
-        return ResponseEntity.ok()
-                .contentType(MediaType.TEXT_HTML) // Set Content-Type to text/html
-                .body(htmlContent);
-    }
-
-
-    @GetMapping
-    public Recipe getRecipe(@RequestParam Integer id){
-        Optional recipe = recipeRepository.findById(id);
-        if(recipe.isPresent()){
-            return (Recipe) recipe.get();
-        }
-        return null;
-    }
-
-
-
-
     // Get all recipes
-
     @GetMapping
     public ResponseEntity<List<Recipe>> getAllRecipes() {
         Iterable<Recipe> recipeIterable = recipeRepository.findAll();
@@ -57,21 +32,21 @@ public class RecipeController {
         return ResponseEntity.ok(recipes);
     }
 
-
     // Get recipe by ID
     @GetMapping("/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Integer id) {
-        Recipe recipe = recipeRepository.findById(id)
-                .orElse(null);
-        if (recipe == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(recipe);
+        System.out.println("Received request for recipe with ID: " + id); // Add this logging statement
+        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+        return recipeOptional.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // Create a new recipe
     @PostMapping
     public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
+        if (recipe == null) {
+            return ResponseEntity.badRequest().build();
+        }
         Recipe savedRecipe = recipeRepository.save(recipe);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedRecipe);
     }
@@ -79,9 +54,11 @@ public class RecipeController {
     // Update an existing recipe
     @PutMapping("/{id}")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable Integer id, @RequestBody Recipe updatedRecipe) {
-        Recipe existingRecipe = recipeRepository.findById(id)
-                .orElse(null);
-        if (existingRecipe == null) {
+        if (updatedRecipe == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Optional<Recipe> existingRecipeOptional = recipeRepository.findById(id);
+        if (existingRecipeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         updatedRecipe.setId(id);
