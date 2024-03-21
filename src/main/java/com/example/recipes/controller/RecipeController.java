@@ -64,7 +64,7 @@ public class RecipeController {
 
     // Get recipe by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable Integer id) {
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
         System.out.println("Received request for recipe with ID: " + id); // Add this logging statement
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
         return recipeOptional.map(ResponseEntity::ok)
@@ -83,7 +83,7 @@ public class RecipeController {
 
     // Update an existing recipe
     @PutMapping("/{id}")
-    public ResponseEntity<Recipe> updateRecipe(@PathVariable Integer id, @RequestBody Recipe updatedRecipe) {
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @RequestBody Recipe updatedRecipe) {
         if (updatedRecipe == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -98,7 +98,7 @@ public class RecipeController {
 
     // Delete a recipe by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRecipe(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteRecipe(@PathVariable Long id) {
         if (!recipeRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

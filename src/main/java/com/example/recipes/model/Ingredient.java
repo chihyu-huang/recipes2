@@ -1,16 +1,27 @@
 package com.example.recipes.model;
 
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 
+
+@Entity
 public class Ingredient{
-    @Id
+
+    @jakarta.persistence.Id
+//    @Id
     private Long id;
 
+
+
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String amount;
 
+
+
     @ManyToOne
+    @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
 
@@ -45,14 +56,6 @@ public class Ingredient{
 
     public void setAmount(String amount) {
         this.amount = amount;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
     }
 
 
